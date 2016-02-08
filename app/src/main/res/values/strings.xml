@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Pop Movies</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="no_movie_data_found">No movie data found</string>
+    <string name="enable_internet">Please enable internet connection on your device</string>
+
+    <string name="menu_item_settings">Settings</string>
+
+    <string name="pref_sort_by_title">Sort By</string>
+    <string name="pref_sort_by_key" translatable="false">sort_by</string>
+    <string name="pref_sort_by_default" translatable="false">popularity</string>
+
+    <string-array name="pref_sort_by_labels">
+        <item>Popularity</item>
+        <item>Rating</item>
+    </string-array>
+
+    <string-array name="pref_sort_by_values" translatable="false">
+        <item>popularity</item>
+        <item>rating</item>
+    </string-array>
+
+    <string name="pref_nsfw_title">Enable NSFW</string>
+    <string name="pref_nsfw_key" translatable="false">nsfw</string>
+    <string name="pref_nsfw_default" translatable="false">no</string>
+
+    <string-array name="pref_nsfw_labels">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="pref_nsfw_values" translatable="false">
+        <item>yes</item>
+        <item>no</item>
+    </string-array>
+
+</resources>
