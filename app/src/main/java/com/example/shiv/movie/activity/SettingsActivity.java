@@ -33,19 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().
                 add(R.id.activity_settings_linearlayout, settingsFragment).commit();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Functions.inflateApplicationMenu(getMenuInflater(), menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Functions.onItemSelectedApplicationMenu(item, this);
-        return super.onOptionsItemSelected(item);
-    }
-
+    
     @Override
     public boolean onSupportNavigateUp() {
         finish();
