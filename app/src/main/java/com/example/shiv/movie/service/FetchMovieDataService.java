@@ -16,6 +16,7 @@ import com.example.shiv.movie.commons.Strings;
 /**
  * Created by shiv on 5/2/16.
  */
+@Deprecated
 public class FetchMovieDataService extends IntentService {
 
     private SharedPreferences sharedPreferences;

@@ -3,12 +3,9 @@ package com.example.shiv.movie.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.shiv.movie.R;
-import com.example.shiv.movie.commons.Functions;
-import com.example.shiv.movie.fragment.SettingsFragment;
+import com.example.shiv.movie.fragments.SettingsFragment;
 
 /**
  * Created by shiv on 3/2/16.
@@ -33,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().
                 add(R.id.activity_settings_linearlayout, settingsFragment).commit();
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();

@@ -4,6 +4,7 @@
 
     <string name="no_movie_data_found">No movie data found</string>
     <string name="enable_internet">Please enable internet connection on your device</string>
+    <string name="server_error">There seems to some error at the server</string>
 
     <string name="menu_item_settings">Settings</string>
 

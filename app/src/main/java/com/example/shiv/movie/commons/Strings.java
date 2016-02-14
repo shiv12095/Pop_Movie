@@ -30,6 +30,8 @@ public class Strings {
 
     public static final String MOVIEDB_IMAGE_URL_PATH = "http://image.tmdb.org/t/p/";
 
+    public static final String MOVIEDB_REST_API_PATH = "http://api.themoviedb.org/3";
+
     public static final String MOVIEDB_API_URL_AUTHORITY = "api.themoviedb.org";
 
     public static final String MOVIEDB_SORT_BY_PARAMETER = "sort_by";

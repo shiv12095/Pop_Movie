@@ -1,4 +1,4 @@
-package com.example.shiv.movie.fragment;
+package com.example.shiv.movie.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

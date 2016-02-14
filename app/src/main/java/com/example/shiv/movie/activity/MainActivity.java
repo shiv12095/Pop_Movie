@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.shiv.movie.commons.Functions;
-import com.example.shiv.movie.fragment.MovieGridFragment;
+import com.example.shiv.movie.fragments.MovieGridFragment;
 import com.example.shiv.movie.R;
 
 /**
