@@ -11,12 +11,4 @@
         android:scaleType="fitXY"
         android:src="@color/colorPrimary"/>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:id="@+id/list_item_grid_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/list_item_progress_bar_top_margin"
-        android:layout_centerHorizontal="true" />
-
 </RelativeLayout>

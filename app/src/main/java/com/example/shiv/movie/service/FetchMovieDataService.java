@@ -11,7 +11,7 @@ import android.util.Log;
 import com.example.shiv.movie.BuildConfig;
 import com.example.shiv.movie.R;
 import com.example.shiv.movie.commons.Functions;
-import com.example.shiv.movie.commons.Strings;
+import com.example.shiv.movie.commons.Constants;
 
 /**
  * Created by shiv on 5/2/16.
@@ -38,26 +38,26 @@ public class FetchMovieDataService extends IntentService {
 
     private void fetchDiscoverMovieContent(){
         Uri.Builder uriBuilder = new Uri.Builder();
-        uriBuilder.scheme(Strings.HTTP)
-                .authority(Strings.MOVIEDB_API_URL_AUTHORITY)
+        uriBuilder.scheme(Constants.HTTP)
+                .authority(Constants.MOVIEDB_API_URL_AUTHORITY)
                 .appendPath("3")
-                .appendPath(Strings.MOVIEDB_DISCOVER)
-                .appendPath(Strings.MOVIE);
+                .appendPath(Constants.MOVIEDB_DISCOVER)
+                .appendPath(Constants.MOVIE);
         if(sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
                 getResources().getString(R.string.pref_sort_by_default)).
                 equals(getResources().getString(R.string.pref_sort_by_default))){
             uriBuilder.
-                    appendQueryParameter(Strings.MOVIEDB_SORT_BY_PARAMETER, Strings.MOVIEDB_POPULARITY_DESCENDING);
+                    appendQueryParameter(Constants.MOVIEDB_SORT_BY_PARAMETER, Constants.MOVIEDB_POPULARITY_DESCENDING);
         }else{
             uriBuilder.
-                    appendQueryParameter(Strings.MOVIEDB_SORT_BY_PARAMETER, Strings.MOVIEDB_RATING_DESCENDING);
+                    appendQueryParameter(Constants.MOVIEDB_SORT_BY_PARAMETER, Constants.MOVIEDB_RATING_DESCENDING);
         }
-        uriBuilder.appendQueryParameter(Strings.MOVIEDB_API_KEY_PARAMETER, BuildConfig.API_KEY);
+        uriBuilder.appendQueryParameter(Constants.MOVIEDB_API_KEY_PARAMETER, BuildConfig.API_KEY);
 
         Log.d(getClass().toString(), uriBuilder.build().toString());
         String string = Functions.getStringFromURL(uriBuilder.build().toString());
-        Intent intent = new Intent(Strings.RECEIVED_MOVIE_DATA_EVENT);
-        intent.putExtra(Strings.INTENT_EXTRA_STRING, string);
+        Intent intent = new Intent(Constants.RECEIVED_MOVIE_DATA_EVENT);
+        intent.putExtra(Constants.INTENT_EXTRA_STRING, string);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 }

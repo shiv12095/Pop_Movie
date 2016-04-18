@@ -2,10 +2,12 @@ package com.example.shiv.movie.objects;
 
 
 
-import com.example.shiv.movie.commons.Strings;
+import com.example.shiv.movie.commons.Constants;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
+
+import java.util.ArrayList;
 
 /**
  * Created by shiv on 5/2/16.
@@ -21,6 +23,7 @@ public class MovieObject {
     private String poster_url;
     private DateTime dateTime;
     private boolean adult;
+    private ArrayList<MovieObjectResponse> movieObjectResponseArrayList;
 
     public boolean isAdult() {
         return adult;
@@ -79,17 +82,23 @@ public class MovieObject {
     }
 
     public String getPoster_url(){
-        return Strings.MOVIEDB_IMAGE_URL_PATH + Strings.MOVIEDB_IMAGE_SIZE + this.poster_path;
+        return Constants.MOVIEDB_IMAGE_URL_PATH + Constants.MOVIEDB_IMAGE_SIZE + this.poster_path;
     }
 
     public DateTime getDateTime() {
-        this.dateTime = DateTime.parse(this.release_date, DateTimeFormat.forPattern(Strings.DATE_FORMAT));
+        this.dateTime = DateTime.parse(this.release_date, DateTimeFormat.forPattern(Constants.DATE_FORMAT));
         return dateTime;
     }
 
     public String getRating(){
-        return this.vote_average + Strings.FORWARD_SLASH + Strings.TEN;
+        return this.vote_average + Constants.FORWARD_SLASH + Constants.TEN;
     }
 
+    public ArrayList<MovieObjectResponse> getMovieObjectResponseArrayList() {
+        return movieObjectResponseArrayList;
+    }
 
+    public void setMovieObjectResponseArrayList(ArrayList<MovieObjectResponse> movieObjectResponseArrayList) {
+        this.movieObjectResponseArrayList = movieObjectResponseArrayList;
+    }
 }

@@ -1,8 +1,9 @@
 package com.example.shiv.movie.rest.service;
 
 import com.example.shiv.movie.objects.MovieObjectResponse;
+import com.example.shiv.movie.objects.MovieObjectReviewResponse;
+import com.example.shiv.movie.objects.MovieObjectTrailerResponse;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
@@ -16,12 +17,15 @@ import retrofit.http.QueryMap;
 public interface MovieDBApi {
 
 
-    @GET("/discover/movie")
-    public void getTrendingMovies(@QueryMap Map<String, String> options,  Callback<MovieObjectResponse> callback);
+    @GET("/movie/top_rated")
+    public void getTopRatedMovies(@QueryMap Map<String, String> options,  Callback<MovieObjectResponse> callback);
 
-    @GET("/movie/{id}/videos")
-    public void getMovieVideos(@Path("id") Long id);
+    @GET("/movie/popular")
+    public void getPopularMovies(@QueryMap Map<String, String> options,  Callback<MovieObjectResponse> callback);
 
     @GET("/movie/{id}/reviews")
-    public void getMovieReviews(@Path("id") Long id);
+    public void getMovieReview(@Path("id") Long id, @QueryMap Map<String, String> options, Callback<MovieObjectReviewResponse> callback);
+
+    @GET("/movie/{id}/videos")
+    public void getMovieVideos(@Path("id") Long id, @QueryMap Map<String, String> options, Callback<MovieObjectTrailerResponse> callback);
 }

@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
+import com.example.shiv.movie.BuildConfig;
 import com.example.shiv.movie.R;
 import com.example.shiv.movie.activity.SettingsActivity;
 
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 
 /**
@@ -27,6 +29,12 @@ import java.net.URL;
  * Common functions that are used across the application.
  */
 public class Functions {
+
+    public static HashMap<String, String> getQueryParameterMap(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put(Constants.MOVIEDB_API_KEY_PARAMETER, BuildConfig.API_KEY);
+        return map;
+    }
 
     public static void onItemSelectedApplicationMenu(MenuItem item, Context context){
         int itemId = item.getItemId();
@@ -71,7 +79,7 @@ public class Functions {
         try {
             URL url = new URL(string);
             httpURLConnection = (HttpURLConnection)url.openConnection();
-            httpURLConnection.setRequestMethod(Strings.HTTP_GET);
+            httpURLConnection.setRequestMethod(Constants.HTTP_GET);
             httpURLConnection.connect();
 
             InputStream inputStream = httpURLConnection.getInputStream();
@@ -93,7 +101,7 @@ public class Functions {
                 return stringBuffer.toString();
             }
         }catch (IOException e){
-            Log.e(Strings.class.toString(), "Error connecting to URL : " + string, e);
+            Log.e(Constants.class.toString(), "Error connecting to URL : " + string, e);
         }finally {
             if (httpURLConnection != null) {
                 httpURLConnection.disconnect();
@@ -102,7 +110,7 @@ public class Functions {
                 try {
                     bufferedReader.close();
                 } catch (final IOException e) {
-                    Log.e(Strings.class.toString(), "Error closing stream", e);
+                    Log.e(Constants.class.toString(), "Error closing stream", e);
                 }
             }
         }
