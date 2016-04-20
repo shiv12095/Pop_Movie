@@ -1,10 +1,14 @@
 package com.example.shiv.movie.fragments;
 
 
+import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +47,8 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     private GridAdapter gridAdapter;
     private RecyclerView recyclerView;
 
+    private boolean writePermission;
+
     private DBAdapter dbAdapter;
 
     @Override
@@ -50,18 +56,25 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         super.onCreate(savedInstanceState);
         movieDBApiClient = new MovieDBApiClient();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        dbAdapter = new DBAdapter();
+        checkPermissionsGranted();
+        if (writePermission) {
+            dbAdapter = new DBAdapter();
+
+        } else {
+            Toast.makeText(getContext(), "The App requires the storage permission to work", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
     }
 
     @Override
     public void onStart() {
         swipeRefreshLayout.post(new Runnable() {
-        @Override
-        public void run() {
-            swipeRefreshLayout.setRefreshing(true);
-                getDataFromMovieDB();
-    }
-}
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        getDataFromMovieDB();
+                                    }
+                                }
         );
         super.onStart();
     }
@@ -83,39 +96,39 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_movie_grid, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_grid, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_movie_grid_swipeContainer);
         swipeRefreshLayout.setOnRefreshListener(this);
-        movieObjectArrayList =  new ArrayList<>();
+        movieObjectArrayList = new ArrayList<>();
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = (RecyclerView)view.findViewById(R.id.fragment_movie_grid_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_movie_grid_recycler_view);
         gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridAdapter = new GridAdapter(getContext(), movieObjectArrayList, getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(gridAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);
     }
 
-    private void getDataFromMovieDB(){
+    private void getDataFromMovieDB() {
         swipeRefreshLayout.setRefreshing(true);
-        if(Functions.isInternetEnabled(getActivity())) {
-            if(sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
+        if (Functions.isInternetEnabled(getActivity())) {
+            if (sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
                     getResources().getString(R.string.pref_sort_by_default)).
-                    equals(getResources().getString(R.string.pref_sort_by_popularity))){
+                    equals(getResources().getString(R.string.pref_sort_by_popularity))) {
                 getPopularMovies();
-            }else if(sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
+            } else if (sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
                     getResources().getString(R.string.pref_sort_by_rating)).
-                    equals(getResources().getString(R.string.pref_sort_by_default))){
+                    equals(getResources().getString(R.string.pref_sort_by_default))) {
                 getTopRatedMovies();
-            }else{
+            } else {
                 getFavoriteMovies();
                 return;
             }
-        }else{
+        } else {
             Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.enable_internet),
                     Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
@@ -127,14 +140,15 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         getDataFromMovieDB();
     }
 
-    private void getFavoriteMovies(){
+    private void getFavoriteMovies() {
         ArrayList<MovieObject> movieObjectArrayList = dbAdapter.getFavoriteMovies();
         swipeRefreshLayout.setRefreshing(false);
-        gridAdapter.clear();;
+        gridAdapter.clear();
+        ;
         gridAdapter.addAll(movieObjectArrayList);
     }
 
-    private void getPopularMovies(){
+    private void getPopularMovies() {
         HashMap<String, String> parameters = Functions.getQueryParameterMap();
         parameters.put(Constants.MOVIEDB_SORT_BY_PARAMETER, Constants.MOVIEDB_POPULARITY_DESCENDING);
         movieDBApiClient.getService().getPopularMovies(parameters, new Callback<MovieObjectResponse>() {
@@ -179,7 +193,7 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         });
     }
 
-    private void getTopRatedMovies(){
+    private void getTopRatedMovies() {
         HashMap<String, String> parameters = Functions.getQueryParameterMap();
         parameters.put(Constants.MOVIEDB_SORT_BY_PARAMETER, Constants.MOVIEDB_RATING_DESCENDING);
         movieDBApiClient.getService().getTopRatedMovies(parameters, new Callback<MovieObjectResponse>() {
@@ -222,5 +236,45 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case Constants.MY_PERMISSIONS_REQUEST_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    writePermission = true;
+                } else {
+                    writePermission = false;
+                    Toast.makeText(getContext(), "The App requires the storage permission to work", Toast.LENGTH_SHORT).show();
+                    getActivity().finish();
+                }
+                return;
+            }
+        }
+    }
+
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    Constants.MY_PERMISSIONS_REQUEST_STORAGE);
+        }
+    }
+
+    private void checkPermissionsGranted() {
+        /**
+         * Check for write permission
+         */
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions();
+        } else {
+            writePermission = true;
+        }
     }
 }
