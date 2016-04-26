@@ -27,6 +27,7 @@ import com.example.shiv.movie.objects.MovieObject;
 import com.example.shiv.movie.objects.MovieObjectResponse;
 import com.example.shiv.movie.rest.client.MovieDBApiClient;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +40,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
 
     private SharedPreferences sharedPreferences;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Gson gson = new Gson();
     private ArrayList<MovieObject> movieObjectArrayList;
     private MovieDBApiClient movieDBApiClient;
 
@@ -50,33 +50,53 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     private boolean writePermission;
 
     private DBAdapter dbAdapter;
+    private Gson gson;
+
+    private String MOVIE_LIST = "movie_list";
+    private boolean recreateView = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gson = new Gson();
+        movieObjectArrayList = new ArrayList<>();
+        if (savedInstanceState != null) {
+            recreateView = false;
+            TypeToken<ArrayList<MovieObject>> typeToken = new TypeToken<ArrayList<MovieObject>>() {};
+            movieObjectArrayList = gson.fromJson(savedInstanceState.getString(MOVIE_LIST), typeToken.getType());
+            Log.d(getClass().toString(), Integer.toString(movieObjectArrayList.size()));
+
+        }
         movieDBApiClient = new MovieDBApiClient();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         checkPermissionsGranted();
         if (writePermission) {
             dbAdapter = new DBAdapter();
-
         } else {
-            Toast.makeText(getContext(), "The App requires the storage permission to work", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.storage_permission), Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }
     }
 
     @Override
     public void onStart() {
-        swipeRefreshLayout.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        swipeRefreshLayout.setRefreshing(true);
-                                        getDataFromMovieDB();
-                                    }
-                                }
-        );
         super.onStart();
+        Log.d(getClass().toString(), "On start called");
+        if (!recreateView) {
+            recreateView = true;
+            gridAdapter.clear();
+            gridAdapter.addAll(movieObjectArrayList);
+            return;
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                        public void run() {
+                            swipeRefreshLayout.setRefreshing(true);
+                            getDataFromMovieDB();
+                    }
+                }
+            );
+        }
     }
 
     @Override
@@ -99,7 +119,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         View view = inflater.inflate(R.layout.fragment_movie_grid, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_movie_grid_swipeContainer);
         swipeRefreshLayout.setOnRefreshListener(this);
-        movieObjectArrayList = new ArrayList<>();
         return view;
     }
 
@@ -121,8 +140,8 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
                     equals(getResources().getString(R.string.pref_sort_by_popularity))) {
                 getPopularMovies();
             } else if (sharedPreferences.getString(getResources().getString(R.string.pref_sort_by_key),
-                    getResources().getString(R.string.pref_sort_by_rating)).
-                    equals(getResources().getString(R.string.pref_sort_by_default))) {
+                    getResources().getString(R.string.pref_sort_by_popularity)).
+                    equals(getResources().getString(R.string.pref_sort_by_rating))) {
                 getTopRatedMovies();
             } else {
                 getFavoriteMovies();
@@ -144,7 +163,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         ArrayList<MovieObject> movieObjectArrayList = dbAdapter.getFavoriteMovies();
         swipeRefreshLayout.setRefreshing(false);
         gridAdapter.clear();
-        ;
         gridAdapter.addAll(movieObjectArrayList);
     }
 
@@ -195,7 +213,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
 
     private void getTopRatedMovies() {
         HashMap<String, String> parameters = Functions.getQueryParameterMap();
-        parameters.put(Constants.MOVIEDB_SORT_BY_PARAMETER, Constants.MOVIEDB_RATING_DESCENDING);
         movieDBApiClient.getService().getTopRatedMovies(parameters, new Callback<MovieObjectResponse>() {
             @Override
             public void success(MovieObjectResponse movieObjectResponse, Response response) {
@@ -276,5 +293,13 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         } else {
             writePermission = true;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(getClass().toString(), "Trying to save stuff");
+        outState.putString(MOVIE_LIST, gson.toJson(gridAdapter.getMovieObjectArrayList()));
+        Log.d(getClass().toString(), outState.getString(MOVIE_LIST));
     }
 }

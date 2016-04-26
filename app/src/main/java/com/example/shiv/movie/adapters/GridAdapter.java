@@ -91,4 +91,8 @@ public class GridAdapter extends RecyclerView.Adapter<GridViewHolder> {
         this.movieObjectArrayList.addAll(movieObjectArrayList);
         notifyItemRangeInserted(0, movieObjectArrayList.size());
     }
+
+    public ArrayList<MovieObject> getMovieObjectArrayList() {
+        return movieObjectArrayList;
+    }
 }

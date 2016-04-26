@@ -27,6 +27,7 @@ import com.example.shiv.movie.objects.MovieObjectTrailer;
 import com.example.shiv.movie.objects.MovieObjectTrailerResponse;
 import com.example.shiv.movie.rest.client.MovieDBApiClient;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,10 +69,19 @@ public class MovieDetailFragment extends Fragment {
 
     private boolean isFavorite;
 
+    private String REVIEW_LIST = "review_list";
+    private String TRAILER_LIST = "trailer_list";
+
     public MovieDetailFragment() {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TRAILER_LIST, gson.toJson(trailerList));
+        outState.putString(REVIEW_LIST, gson.toJson(reviewList));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +91,6 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(getClass().toString(), "Hello");
         return inflater.inflate(R.layout.fragment_movie_detail, container, false);
     }
 
@@ -94,39 +103,38 @@ public class MovieDetailFragment extends Fragment {
         Bundle bundle;
 
         sharedPreferences = getContext().getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
-        if(sharedPreferences.getBoolean(Constants.IS_TWO_PANE, false)) {
+        if (sharedPreferences.getBoolean(Constants.IS_TWO_PANE, false)) {
             bundle = getArguments();
-        }else{
+        } else {
             bundle = getActivity().getIntent().getExtras();
         }
 
-        if(bundle == null){
+        if (bundle == null) {
             return;
         }
 
         movieObject = gson.fromJson(bundle.getString(Constants.INTENT_EXTRA_STRING), MovieObject.class);
 
         reviewTextView = (TextView) view.findViewById(R.id.activity_movie_detail_review_textview);
-        reviewExpandButton = (ImageView)view.findViewById(R.id.activity_movie_detail_review_image_view);
+        reviewExpandButton = (ImageView) view.findViewById(R.id.activity_movie_detail_review_image_view);
 
         trailerTextView = (TextView) view.findViewById(R.id.activity_movie_detail_trailer_textview);
-        trailerExpandButton = (ImageView)view.findViewById(R.id.activity_movie_detail_trailer_image_view);
+        trailerExpandButton = (ImageView) view.findViewById(R.id.activity_movie_detail_trailer_image_view);
 
-        reviewReviewRecyclerView = (RecyclerView)view.findViewById(R.id.activity_movie_detail_review_recycler_view);
+        reviewReviewRecyclerView = (RecyclerView) view.findViewById(R.id.activity_movie_detail_review_recycler_view);
         LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(getContext());
         reviewLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         reviewAdapter = new ReviewAdapter(getContext(), reviewList);
         reviewReviewRecyclerView.setLayoutManager(reviewLinearLayoutManager);
         reviewReviewRecyclerView.setAdapter(reviewAdapter);
-        fetchReviews();
 
-        trailerReviewRecyclerView = (RecyclerView)view.findViewById(R.id.activity_movie_detail_trailer_recycler_view);
+        trailerReviewRecyclerView = (RecyclerView) view.findViewById(R.id.activity_movie_detail_trailer_recycler_view);
         LinearLayoutManager trailerLinearLayoutManager = new LinearLayoutManager(getContext());
         trailerLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         trailerAdapter = new TrailerAdapter(getContext(), trailerList);
         trailerReviewRecyclerView.setLayoutManager(trailerLinearLayoutManager);
         trailerReviewRecyclerView.setAdapter(trailerAdapter);
-        fetchTrailers();
+
 
         Picasso.with(getContext()).load(movieObject.getPoster_url()).into((ImageView) view.findViewById(R.id.activity_movie_detail_poster_imageview));
 
@@ -141,27 +149,46 @@ public class MovieDetailFragment extends Fragment {
 
         isFavorite = dbAdapter.isFavoriteMovie(movieObject.getId());
 
-        favoriteButton = (Button)view.findViewById(R.id.activity_movie_detail_favorite_button);
-        if(isFavorite){
+        favoriteButton = (Button) view.findViewById(R.id.activity_movie_detail_favorite_button);
+
+        setFavoriteButtonFunctionality();
+
+        if (savedInstanceState != null) {
+            TypeToken<ArrayList<MovieObjectReview>> reviewTypeToken = new TypeToken<ArrayList<MovieObjectReview>>() {};
+            TypeToken<ArrayList<MovieObjectTrailer>> trailerTypeToken = new TypeToken<ArrayList<MovieObjectTrailer>>() {};
+            reviewList = gson.fromJson(savedInstanceState.getString(REVIEW_LIST), reviewTypeToken.getType());
+            trailerList = gson.fromJson(savedInstanceState.getString(TRAILER_LIST), trailerTypeToken.getType());
+            reviewAdapter.addAll(reviewList);
+            trailerAdapter.addAll(trailerList);
+            toggleReviewView();
+            toggleTrailerView();
+            return;
+        }
+
+        fetchTrailers();
+        fetchReviews();
+    }
+
+    private void setFavoriteButtonFunctionality() {
+        if (isFavorite) {
             favoriteButton.setText(getActivity().getResources().getString(R.string.unfavorite));
-            favoriteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        } else {
+            favoriteButton.setText(getActivity().getResources().getString(R.string.favorite));
+        }
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFavorite) {
                     dbAdapter.deleteMovie(movieObject.getId());
                     favoriteButton.setText(getActivity().getResources().getString(R.string.favorite));
                     isFavorite = false;
-                }
-            });
-        }else{
-            favoriteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                } else {
                     dbAdapter.insertMovie(movieObject);
                     favoriteButton.setText(getActivity().getResources().getString(R.string.unfavorite));
                     isFavorite = true;
                 }
-            });
-        }
+            }
+        });
     }
 
     private void fetchReviews() {
@@ -176,20 +203,10 @@ public class MovieDetailFragment extends Fragment {
                 } else {
                     reviewTextView.setText(getResources().getString(R.string.reviews));
                     reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
-                    reviewAdapter.addAll(movieObjectReviewResponse.getResults());
-                    reviewExpandButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(reviewReviewRecyclerView.getVisibility() == View.VISIBLE){
-                                reviewReviewRecyclerView.setVisibility(View.GONE);
-                                reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
-                            }else{
-                                reviewReviewRecyclerView.setVisibility(View.VISIBLE);
-                                reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
-                            }
-                        }
-                    });
+                    reviewList = movieObjectReviewResponse.getResults();
+                    reviewAdapter.addAll(reviewList);
                 }
+                toggleReviewView();
             }
 
             @Override
@@ -211,20 +228,10 @@ public class MovieDetailFragment extends Fragment {
                     trailerExpandButton.setVisibility(View.INVISIBLE);
                 } else {
                     trailerTextView.setText(getResources().getString(R.string.trailers));
-                    trailerAdapter.addAll(movieObjectTrailerResponse.getResults());
-                    trailerExpandButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (trailerReviewRecyclerView.getVisibility() == View.VISIBLE) {
-                                trailerReviewRecyclerView.setVisibility(View.GONE);
-                                trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
-                            } else {
-                                trailerReviewRecyclerView.setVisibility(View.VISIBLE);
-                                trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
-                            }
-                        }
-                    });
+                    trailerList = movieObjectTrailerResponse.getResults();
+                    trailerAdapter.addAll(trailerList);
                 }
+                toggleTrailerView();
             }
 
             @Override
@@ -234,5 +241,47 @@ public class MovieDetailFragment extends Fragment {
                 trailerExpandButton.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void toggleReviewView(){
+        if(reviewList.isEmpty()){
+            reviewTextView.setText(getResources().getString(R.string.no_reviews));
+            reviewExpandButton.setVisibility(View.INVISIBLE);
+        }else{
+            reviewTextView.setText(getResources().getString(R.string.reviews));
+            reviewExpandButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (reviewReviewRecyclerView.getVisibility() == View.VISIBLE) {
+                        reviewReviewRecyclerView.setVisibility(View.GONE);
+                        reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
+                    } else {
+                        reviewReviewRecyclerView.setVisibility(View.VISIBLE);
+                        reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
+                    }
+                }
+            });
+        }
+    }
+
+    private void toggleTrailerView(){
+        if(trailerList.isEmpty()){
+            trailerTextView.setText(getResources().getString(R.string.no_trailers));
+            trailerExpandButton.setVisibility(View.INVISIBLE);
+        }else{
+            trailerTextView.setText(getResources().getString(R.string.trailers));
+            trailerExpandButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (trailerReviewRecyclerView.getVisibility() == View.VISIBLE) {
+                        trailerReviewRecyclerView.setVisibility(View.GONE);
+                        trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
+                    } else {
+                        trailerReviewRecyclerView.setVisibility(View.VISIBLE);
+                        trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
+                    }
+                }
+            });
+        }
     }
 }
