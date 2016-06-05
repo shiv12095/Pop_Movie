@@ -65,6 +65,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridViewHolder> {
                     fragmentManager.beginTransaction().replace(R.id.activity_main_movie_detail_container, movieDetailFragment).commit();
                 }else {
                     Intent intent = new Intent(context, MovieDetailActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     intent.putExtra(Constants.INTENT_EXTRA_STRING, gson.toJson(movieObject));
                     context.startActivity(intent);
                 }

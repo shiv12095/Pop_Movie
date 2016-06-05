@@ -4,6 +4,7 @@ package com.example.shiv.movie.fragments;
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -53,19 +54,23 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     private Gson gson;
 
     private String MOVIE_LIST = "movie_list";
-    private boolean recreateView = true;
+    private static boolean recreateView = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(getClass().toString(), "OnCreate called");
         gson = new Gson();
         movieObjectArrayList = new ArrayList<>();
         if (savedInstanceState != null) {
+            Log.d(getClass().toString(), "Saved instance state is not null");
             recreateView = false;
             TypeToken<ArrayList<MovieObject>> typeToken = new TypeToken<ArrayList<MovieObject>>() {};
             movieObjectArrayList = gson.fromJson(savedInstanceState.getString(MOVIE_LIST), typeToken.getType());
             Log.d(getClass().toString(), Integer.toString(movieObjectArrayList.size()));
-
+        }else{
+            Log.d(getClass().toString(), "Saved Instance state" +
+                    " is null");
         }
         movieDBApiClient = new MovieDBApiClient();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -82,19 +87,20 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     public void onStart() {
         super.onStart();
         Log.d(getClass().toString(), "On start called");
+        Log.d(getClass().toString(), "Recreate view is : " + recreateView);
         if (!recreateView) {
-            recreateView = true;
             gridAdapter.clear();
             gridAdapter.addAll(movieObjectArrayList);
             return;
         } else {
             swipeRefreshLayout.post(new Runnable() {
-                    @Override
-                        public void run() {
-                            swipeRefreshLayout.setRefreshing(true);
-                            getDataFromMovieDB();
-                    }
-                }
+                                        @Override
+                                        public void run() {
+                                            recreateView = false;
+                                            swipeRefreshLayout.setRefreshing(true);
+                                            getDataFromMovieDB();
+                                        }
+                                    }
             );
         }
     }
@@ -160,10 +166,7 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void getFavoriteMovies() {
-        ArrayList<MovieObject> movieObjectArrayList = dbAdapter.getFavoriteMovies();
-        swipeRefreshLayout.setRefreshing(false);
-        gridAdapter.clear();
-        gridAdapter.addAll(movieObjectArrayList);
+        new FetchMoviesFromDBAsyncTask().execute();
     }
 
     private void getPopularMovies() {
@@ -301,5 +304,35 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         Log.d(getClass().toString(), "Trying to save stuff");
         outState.putString(MOVIE_LIST, gson.toJson(gridAdapter.getMovieObjectArrayList()));
         Log.d(getClass().toString(), outState.getString(MOVIE_LIST));
+    }
+
+    public static boolean isRecreateView() {
+        return recreateView;
+    }
+
+    public static void setRecreateView(boolean recreateView) {
+        MovieGridFragment.recreateView = recreateView;
+    }
+
+    private class FetchMoviesFromDBAsyncTask extends AsyncTask<Void, Void, ArrayList<MovieObject>>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<MovieObject> doInBackground(Void... params) {
+            ArrayList<MovieObject> movieObjectArrayList = dbAdapter.getFavoriteMovies();
+            return movieObjectArrayList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<MovieObject> list) {
+            super.onPostExecute(list);
+            swipeRefreshLayout.setRefreshing(false);
+            gridAdapter.clear();
+            gridAdapter.addAll(list);
+        }
     }
 }
