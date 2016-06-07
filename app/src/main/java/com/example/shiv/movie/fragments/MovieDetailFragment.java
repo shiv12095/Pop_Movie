@@ -80,8 +80,10 @@ public class MovieDetailFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-            super.onAttach(context);
-            this.context = context;
+        super.onAttach(context);
+        this.context = context;
+        fetchTrailers();
+        fetchReviews();
     }
 
     @Override
@@ -162,8 +164,10 @@ public class MovieDetailFragment extends Fragment {
         setFavoriteButtonFunctionality();
 
         if (savedInstanceState != null) {
-            TypeToken<ArrayList<MovieObjectReview>> reviewTypeToken = new TypeToken<ArrayList<MovieObjectReview>>() {};
-            TypeToken<ArrayList<MovieObjectTrailer>> trailerTypeToken = new TypeToken<ArrayList<MovieObjectTrailer>>() {};
+            TypeToken<ArrayList<MovieObjectReview>> reviewTypeToken = new TypeToken<ArrayList<MovieObjectReview>>() {
+            };
+            TypeToken<ArrayList<MovieObjectTrailer>> trailerTypeToken = new TypeToken<ArrayList<MovieObjectTrailer>>() {
+            };
             reviewList = gson.fromJson(savedInstanceState.getString(REVIEW_LIST), reviewTypeToken.getType());
             trailerList = gson.fromJson(savedInstanceState.getString(TRAILER_LIST), trailerTypeToken.getType());
             reviewAdapter.addAll(reviewList);
@@ -172,9 +176,6 @@ public class MovieDetailFragment extends Fragment {
             toggleTrailerView();
             return;
         }
-
-        fetchTrailers();
-        fetchReviews();
     }
 
     private void setFavoriteButtonFunctionality() {
@@ -204,17 +205,17 @@ public class MovieDetailFragment extends Fragment {
         movieDBApiClient.getService().getMovieReview(movieObject.getId(), parameters, new Callback<MovieObjectReviewResponse>() {
             @Override
             public void success(MovieObjectReviewResponse movieObjectReviewResponse, Response response) {
-                    Log.d(getClass().toString(), "Success here");
-                    if (movieObjectReviewResponse.getResults().isEmpty()) {
-                        reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
-                        reviewExpandButton.setVisibility(View.INVISIBLE);
-                    } else {
-                        reviewTextView.setText(context.getResources().getString(R.string.reviews));
-                        reviewExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
-                        reviewList = movieObjectReviewResponse.getResults();
-                        reviewAdapter.addAll(reviewList);
-                    }
-                    toggleReviewView();
+                Log.d(getClass().toString(), "Success here");
+                if (movieObjectReviewResponse.getResults().isEmpty()) {
+                    reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
+                    reviewExpandButton.setVisibility(View.INVISIBLE);
+                } else {
+                    reviewTextView.setText(context.getResources().getString(R.string.reviews));
+                    reviewExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
+                    reviewList = movieObjectReviewResponse.getResults();
+                    reviewAdapter.addAll(reviewList);
+                }
+                toggleReviewView();
             }
 
             @Override
@@ -251,11 +252,11 @@ public class MovieDetailFragment extends Fragment {
         });
     }
 
-    private void toggleReviewView(){
-        if(reviewList.isEmpty()){
+    private void toggleReviewView() {
+        if (reviewList.isEmpty()) {
             reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
             reviewExpandButton.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             reviewTextView.setText(context.getResources().getString(R.string.reviews));
             reviewExpandButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -272,11 +273,11 @@ public class MovieDetailFragment extends Fragment {
         }
     }
 
-    private void toggleTrailerView(){
-        if(trailerList.isEmpty()){
+    private void toggleTrailerView() {
+        if (trailerList.isEmpty()) {
             trailerTextView.setText(getResources().getString(R.string.no_trailers));
             trailerExpandButton.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             trailerTextView.setText(getResources().getString(R.string.trailers));
             trailerExpandButton.setOnClickListener(new View.OnClickListener() {
                 @Override

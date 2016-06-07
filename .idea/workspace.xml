@@ -32,8 +32,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2587269">
-              <caret line="21" column="50" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.37864077">
+              <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -43,23 +43,22 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/shiv/movie/fragments/MovieDetailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="184" column="9" selection-start-line="184" selection-start-column="9" selection-end-line="184" selection-end-column="9" />
+              <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
               <folding>
-                <element signature="e#3172#3173#0" expanded="true" />
-                <element signature="e#3222#3223#0" expanded="true" />
-                <element signature="method#onViewCreated#0;class#MovieDetailFragment#0" expanded="false" />
-                <element signature="e#7557#7610#0" expanded="true" />
-                <element signature="e#7665#7716#0" expanded="true" />
-                <element signature="e#8005#8056#0" expanded="true" />
-                <element signature="e#8223#8276#0" expanded="true" />
-                <element signature="e#8929#8982#0" expanded="true" />
-                <element signature="e#9135#9185#0" expanded="true" />
-                <element signature="e#9713#9766#0" expanded="true" />
-                <element signature="e#10356#10410#0" expanded="true" />
-                <element signature="e#10553#10604#0" expanded="true" />
-                <element signature="e#10998#11052#0" expanded="true" />
-                <element signature="e#11261#11314#0" expanded="true" />
-                <element signature="e#11429#11479#0" expanded="true" />
+                <element signature="e#3213#3214#0" expanded="true" />
+                <element signature="e#3263#3264#0" expanded="true" />
+                <element signature="e#7574#7627#0" expanded="true" />
+                <element signature="e#7682#7733#0" expanded="true" />
+                <element signature="e#8022#8073#0" expanded="true" />
+                <element signature="e#8240#8293#0" expanded="true" />
+                <element signature="e#8934#8987#0" expanded="true" />
+                <element signature="e#9128#9178#0" expanded="true" />
+                <element signature="e#9686#9739#0" expanded="true" />
+                <element signature="e#10329#10383#0" expanded="true" />
+                <element signature="e#10526#10577#0" expanded="true" />
+                <element signature="e#10971#11025#0" expanded="true" />
+                <element signature="e#11237#11290#0" expanded="true" />
+                <element signature="e#11407#11457#0" expanded="true" />
                 <element signature="method#toggleTrailerView#0;class#MovieDetailFragment#0" expanded="false" />
               </folding>
             </state>
@@ -1330,7 +1329,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4380571755147" />
+        <entry key="$PROJECT_DIR$" value="4380575102987" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -2541,14 +2540,14 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12077295" sideWeight="0.70916337" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2415459" sideWeight="0.70916337" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12077295" sideWeight="0.29083666" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2415459" sideWeight="0.29083666" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.48446214" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2590,21 +2589,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="141" column="67" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
           <folding>
-            <element signature="e#3172#3173#0" expanded="true" />
-            <element signature="e#3222#3223#0" expanded="true" />
-            <element signature="method#onViewCreated#0;class#MovieDetailFragment#0" expanded="false" />
-            <element signature="e#7557#7610#0" expanded="true" />
-            <element signature="e#7665#7716#0" expanded="true" />
-            <element signature="e#8005#8056#0" expanded="true" />
-            <element signature="e#8223#8276#0" expanded="true" />
-            <element signature="e#8929#8982#0" expanded="true" />
-            <element signature="e#9135#9185#0" expanded="true" />
-            <element signature="e#9713#9766#0" expanded="true" />
-            <element signature="e#10356#10410#0" expanded="true" />
-            <element signature="e#10553#10604#0" expanded="true" />
-            <element signature="e#10998#11052#0" expanded="true" />
-            <element signature="e#11261#11314#0" expanded="true" />
-            <element signature="e#11429#11479#0" expanded="true" />
+            <element signature="e#3213#3214#0" expanded="true" />
+            <element signature="e#3263#3264#0" expanded="true" />
+            <element signature="e#7574#7627#0" expanded="true" />
+            <element signature="e#7682#7733#0" expanded="true" />
+            <element signature="e#8022#8073#0" expanded="true" />
+            <element signature="e#8240#8293#0" expanded="true" />
+            <element signature="e#8934#8987#0" expanded="true" />
+            <element signature="e#9128#9178#0" expanded="true" />
+            <element signature="e#9686#9739#0" expanded="true" />
+            <element signature="e#10329#10383#0" expanded="true" />
+            <element signature="e#10526#10577#0" expanded="true" />
+            <element signature="e#10971#11025#0" expanded="true" />
+            <element signature="e#11237#11290#0" expanded="true" />
+            <element signature="e#11407#11457#0" expanded="true" />
             <element signature="method#toggleTrailerView#0;class#MovieDetailFragment#0" expanded="false" />
           </folding>
         </state>
@@ -2676,21 +2674,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="141" column="67" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
           <folding>
-            <element signature="e#3172#3173#0" expanded="true" />
-            <element signature="e#3222#3223#0" expanded="true" />
-            <element signature="method#onViewCreated#0;class#MovieDetailFragment#0" expanded="false" />
-            <element signature="e#7557#7610#0" expanded="true" />
-            <element signature="e#7665#7716#0" expanded="true" />
-            <element signature="e#8005#8056#0" expanded="true" />
-            <element signature="e#8223#8276#0" expanded="true" />
-            <element signature="e#8929#8982#0" expanded="true" />
-            <element signature="e#9135#9185#0" expanded="true" />
-            <element signature="e#9713#9766#0" expanded="true" />
-            <element signature="e#10356#10410#0" expanded="true" />
-            <element signature="e#10553#10604#0" expanded="true" />
-            <element signature="e#10998#11052#0" expanded="true" />
-            <element signature="e#11261#11314#0" expanded="true" />
-            <element signature="e#11429#11479#0" expanded="true" />
+            <element signature="e#3213#3214#0" expanded="true" />
+            <element signature="e#3263#3264#0" expanded="true" />
+            <element signature="e#7574#7627#0" expanded="true" />
+            <element signature="e#7682#7733#0" expanded="true" />
+            <element signature="e#8022#8073#0" expanded="true" />
+            <element signature="e#8240#8293#0" expanded="true" />
+            <element signature="e#8934#8987#0" expanded="true" />
+            <element signature="e#9128#9178#0" expanded="true" />
+            <element signature="e#9686#9739#0" expanded="true" />
+            <element signature="e#10329#10383#0" expanded="true" />
+            <element signature="e#10526#10577#0" expanded="true" />
+            <element signature="e#10971#11025#0" expanded="true" />
+            <element signature="e#11237#11290#0" expanded="true" />
+            <element signature="e#11407#11457#0" expanded="true" />
             <element signature="method#toggleTrailerView#0;class#MovieDetailFragment#0" expanded="false" />
           </folding>
         </state>
@@ -2750,21 +2747,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="141" column="67" selection-start-line="141" selection-start-column="67" selection-end-line="141" selection-end-column="67" />
           <folding>
-            <element signature="e#3172#3173#0" expanded="true" />
-            <element signature="e#3222#3223#0" expanded="true" />
-            <element signature="method#onViewCreated#0;class#MovieDetailFragment#0" expanded="false" />
-            <element signature="e#7557#7610#0" expanded="true" />
-            <element signature="e#7665#7716#0" expanded="true" />
-            <element signature="e#8005#8056#0" expanded="true" />
-            <element signature="e#8223#8276#0" expanded="true" />
-            <element signature="e#8929#8982#0" expanded="true" />
-            <element signature="e#9135#9185#0" expanded="true" />
-            <element signature="e#9713#9766#0" expanded="true" />
-            <element signature="e#10356#10410#0" expanded="true" />
-            <element signature="e#10553#10604#0" expanded="true" />
-            <element signature="e#10998#11052#0" expanded="true" />
-            <element signature="e#11261#11314#0" expanded="true" />
-            <element signature="e#11429#11479#0" expanded="true" />
+            <element signature="e#3213#3214#0" expanded="true" />
+            <element signature="e#3263#3264#0" expanded="true" />
+            <element signature="e#7574#7627#0" expanded="true" />
+            <element signature="e#7682#7733#0" expanded="true" />
+            <element signature="e#8022#8073#0" expanded="true" />
+            <element signature="e#8240#8293#0" expanded="true" />
+            <element signature="e#8934#8987#0" expanded="true" />
+            <element signature="e#9128#9178#0" expanded="true" />
+            <element signature="e#9686#9739#0" expanded="true" />
+            <element signature="e#10329#10383#0" expanded="true" />
+            <element signature="e#10526#10577#0" expanded="true" />
+            <element signature="e#10971#11025#0" expanded="true" />
+            <element signature="e#11237#11290#0" expanded="true" />
+            <element signature="e#11407#11457#0" expanded="true" />
             <element signature="method#toggleTrailerView#0;class#MovieDetailFragment#0" expanded="false" />
           </folding>
         </state>
@@ -3012,23 +3008,22 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/shiv/movie/fragments/MovieDetailFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="184" column="9" selection-start-line="184" selection-start-column="9" selection-end-line="184" selection-end-column="9" />
+          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
           <folding>
-            <element signature="e#3172#3173#0" expanded="true" />
-            <element signature="e#3222#3223#0" expanded="true" />
-            <element signature="method#onViewCreated#0;class#MovieDetailFragment#0" expanded="false" />
-            <element signature="e#7557#7610#0" expanded="true" />
-            <element signature="e#7665#7716#0" expanded="true" />
-            <element signature="e#8005#8056#0" expanded="true" />
-            <element signature="e#8223#8276#0" expanded="true" />
-            <element signature="e#8929#8982#0" expanded="true" />
-            <element signature="e#9135#9185#0" expanded="true" />
-            <element signature="e#9713#9766#0" expanded="true" />
-            <element signature="e#10356#10410#0" expanded="true" />
-            <element signature="e#10553#10604#0" expanded="true" />
-            <element signature="e#10998#11052#0" expanded="true" />
-            <element signature="e#11261#11314#0" expanded="true" />
-            <element signature="e#11429#11479#0" expanded="true" />
+            <element signature="e#3213#3214#0" expanded="true" />
+            <element signature="e#3263#3264#0" expanded="true" />
+            <element signature="e#7574#7627#0" expanded="true" />
+            <element signature="e#7682#7733#0" expanded="true" />
+            <element signature="e#8022#8073#0" expanded="true" />
+            <element signature="e#8240#8293#0" expanded="true" />
+            <element signature="e#8934#8987#0" expanded="true" />
+            <element signature="e#9128#9178#0" expanded="true" />
+            <element signature="e#9686#9739#0" expanded="true" />
+            <element signature="e#10329#10383#0" expanded="true" />
+            <element signature="e#10526#10577#0" expanded="true" />
+            <element signature="e#10971#11025#0" expanded="true" />
+            <element signature="e#11237#11290#0" expanded="true" />
+            <element signature="e#11407#11457#0" expanded="true" />
             <element signature="method#toggleTrailerView#0;class#MovieDetailFragment#0" expanded="false" />
           </folding>
         </state>
@@ -3044,8 +3039,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2587269">
-          <caret line="21" column="50" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.37864077">
+          <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
           <folding />
         </state>
       </provider>
