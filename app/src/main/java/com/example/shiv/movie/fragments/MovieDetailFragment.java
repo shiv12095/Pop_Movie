@@ -72,8 +72,16 @@ public class MovieDetailFragment extends Fragment {
     private String REVIEW_LIST = "review_list";
     private String TRAILER_LIST = "trailer_list";
 
+    private Context context;
+
     public MovieDetailFragment() {
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+            super.onAttach(context);
+            this.context = context;
     }
 
     @Override
@@ -171,20 +179,20 @@ public class MovieDetailFragment extends Fragment {
 
     private void setFavoriteButtonFunctionality() {
         if (isFavorite) {
-            favoriteButton.setText(getActivity().getResources().getString(R.string.unfavorite));
+            favoriteButton.setText(context.getResources().getString(R.string.unfavorite));
         } else {
-            favoriteButton.setText(getActivity().getResources().getString(R.string.favorite));
+            favoriteButton.setText(context.getResources().getString(R.string.favorite));
         }
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isFavorite) {
                     dbAdapter.deleteMovie(movieObject.getId());
-                    favoriteButton.setText(getActivity().getResources().getString(R.string.favorite));
+                    favoriteButton.setText(context.getResources().getString(R.string.favorite));
                     isFavorite = false;
                 } else {
                     dbAdapter.insertMovie(movieObject);
-                    favoriteButton.setText(getActivity().getResources().getString(R.string.unfavorite));
+                    favoriteButton.setText(context.getResources().getString(R.string.unfavorite));
                     isFavorite = true;
                 }
             }
@@ -196,23 +204,23 @@ public class MovieDetailFragment extends Fragment {
         movieDBApiClient.getService().getMovieReview(movieObject.getId(), parameters, new Callback<MovieObjectReviewResponse>() {
             @Override
             public void success(MovieObjectReviewResponse movieObjectReviewResponse, Response response) {
-                Log.d(getClass().toString(), "Success here");
-                if (movieObjectReviewResponse.getResults().isEmpty()) {
-                    reviewTextView.setText(getResources().getString(R.string.no_reviews));
-                    reviewExpandButton.setVisibility(View.INVISIBLE);
-                } else {
-                    reviewTextView.setText(getResources().getString(R.string.reviews));
-                    reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
-                    reviewList = movieObjectReviewResponse.getResults();
-                    reviewAdapter.addAll(reviewList);
-                }
-                toggleReviewView();
+                    Log.d(getClass().toString(), "Success here");
+                    if (movieObjectReviewResponse.getResults().isEmpty()) {
+                        reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
+                        reviewExpandButton.setVisibility(View.INVISIBLE);
+                    } else {
+                        reviewTextView.setText(context.getResources().getString(R.string.reviews));
+                        reviewExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
+                        reviewList = movieObjectReviewResponse.getResults();
+                        reviewAdapter.addAll(reviewList);
+                    }
+                    toggleReviewView();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Failed to fetch reviews");
-                reviewTextView.setText(getResources().getString(R.string.no_reviews));
+                reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
             }
         });
     }
@@ -224,10 +232,10 @@ public class MovieDetailFragment extends Fragment {
             public void success(MovieObjectTrailerResponse movieObjectTrailerResponse, Response response) {
                 Log.d(getClass().toString(), "Success here");
                 if (movieObjectTrailerResponse.getResults().isEmpty()) {
-                    trailerTextView.setText(getResources().getString(R.string.no_trailers));
+                    trailerTextView.setText(context.getResources().getString(R.string.no_trailers));
                     trailerExpandButton.setVisibility(View.INVISIBLE);
                 } else {
-                    trailerTextView.setText(getResources().getString(R.string.trailers));
+                    trailerTextView.setText(context.getResources().getString(R.string.trailers));
                     trailerList = movieObjectTrailerResponse.getResults();
                     trailerAdapter.addAll(trailerList);
                 }
@@ -237,7 +245,7 @@ public class MovieDetailFragment extends Fragment {
             @Override
             public void failure(RetrofitError error) {
                 Log.d(getClass().toString(), "Failed to fetch trailers");
-                reviewTextView.setText(getResources().getString(R.string.no_trailers));
+                reviewTextView.setText(context.getResources().getString(R.string.no_trailers));
                 trailerExpandButton.setVisibility(View.INVISIBLE);
             }
         });
@@ -245,19 +253,19 @@ public class MovieDetailFragment extends Fragment {
 
     private void toggleReviewView(){
         if(reviewList.isEmpty()){
-            reviewTextView.setText(getResources().getString(R.string.no_reviews));
+            reviewTextView.setText(context.getResources().getString(R.string.no_reviews));
             reviewExpandButton.setVisibility(View.INVISIBLE);
         }else{
-            reviewTextView.setText(getResources().getString(R.string.reviews));
+            reviewTextView.setText(context.getResources().getString(R.string.reviews));
             reviewExpandButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (reviewReviewRecyclerView.getVisibility() == View.VISIBLE) {
                         reviewReviewRecyclerView.setVisibility(View.GONE);
-                        reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
+                        reviewExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_more));
                     } else {
                         reviewReviewRecyclerView.setVisibility(View.VISIBLE);
-                        reviewExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
+                        reviewExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
                     }
                 }
             });
