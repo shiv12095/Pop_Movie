@@ -91,7 +91,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         if (!recreateView) {
             gridAdapter.clear();
             gridAdapter.addAll(movieObjectArrayList);
-            return;
         } else {
             swipeRefreshLayout.post(new Runnable() {
                                         @Override

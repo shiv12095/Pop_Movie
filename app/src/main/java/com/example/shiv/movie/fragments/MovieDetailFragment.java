@@ -82,8 +82,6 @@ public class MovieDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        fetchTrailers();
-        fetchReviews();
     }
 
     @Override
@@ -176,6 +174,8 @@ public class MovieDetailFragment extends Fragment {
             toggleTrailerView();
             return;
         }
+        fetchTrailers();
+        fetchReviews();
     }
 
     private void setFavoriteButtonFunctionality() {
@@ -275,19 +275,19 @@ public class MovieDetailFragment extends Fragment {
 
     private void toggleTrailerView() {
         if (trailerList.isEmpty()) {
-            trailerTextView.setText(getResources().getString(R.string.no_trailers));
+            trailerTextView.setText(context.getResources().getString(R.string.no_trailers));
             trailerExpandButton.setVisibility(View.INVISIBLE);
         } else {
-            trailerTextView.setText(getResources().getString(R.string.trailers));
+            trailerTextView.setText(context.getResources().getString(R.string.trailers));
             trailerExpandButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (trailerReviewRecyclerView.getVisibility() == View.VISIBLE) {
                         trailerReviewRecyclerView.setVisibility(View.GONE);
-                        trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_more));
+                        trailerExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_more));
                     } else {
                         trailerReviewRecyclerView.setVisibility(View.VISIBLE);
-                        trailerExpandButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_expand_less));
+                        trailerExpandButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
                     }
                 }
             });
