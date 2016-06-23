@@ -1,5 +1,6 @@
 package com.example.shiv.movie.commons;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
@@ -34,32 +35,39 @@ public class DBAdapter {
     public DBAdapter() {
         File dataBaseDirectory = getDatabaseDirectory();
         db = SQLiteDatabase.openDatabase(dataBaseDirectory.getAbsolutePath() + File.separator + Constants.APP_DB_NAME, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        db.execSQL("CREATE TABLE IF NOT EXISTS Movie(movie_ID INT UNIQUE,title VARCHAR,release_date VARCHAR,poster_path VARCHAR, vote_average FLOAT, overview VARCHAR);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + Constants.TABLE_NAME + "(" + Constants.COLUMN_HEADER_MOVIE_ID + " INT UNIQUE, " + Constants.COLUMN_HEADER_TITLE + " VARCHAR, " + Constants.COLUMN_HEADER_RELEASE_DATE + " VARCHAR, " + Constants.COLUMN_HEADER_POSTER_PATH + " VARCHAR, " + Constants.COLUMN_HEADER_VOTE_AVERAGE + " FLOAT, " + Constants.COLUMN_HEADER_OVERVIEW + " VARCHAR);");
     }
 
 
     public void insertMovie(MovieObject movieObject) {
-        db.execSQL("INSERT INTO Movie VALUES(" + movieObject.getId() +  "," + "'" + movieObject.getTitle() + "'" + "," + "'" + movieObject.getRelease_date() + "'" + "," + "'" + movieObject.getPoster_path() + "'" + "," +  movieObject.getVote_average() + "," + "'" + movieObject.getOverview() + "'" +")");
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constants.COLUMN_HEADER_MOVIE_ID, movieObject.getId());
+        contentValues.put(Constants.COLUMN_HEADER_TITLE, movieObject.getTitle());
+        contentValues.put(Constants.COLUMN_HEADER_RELEASE_DATE, movieObject.getRelease_date());
+        contentValues.put(Constants.COLUMN_HEADER_POSTER_PATH, movieObject.getPoster_path());
+        contentValues.put(Constants.COLUMN_HEADER_VOTE_AVERAGE, movieObject.getVote_average());
+        contentValues.put(Constants.COLUMN_HEADER_OVERVIEW, movieObject.getOverview());
+        db.insert(Constants.TABLE_NAME, null, contentValues);
     }
 
     public ArrayList<MovieObject> getFavoriteMovies() {
         ArrayList<MovieObject> list = new ArrayList<>();
-        Cursor result = db.rawQuery("SELECT * FROM Movie;", null);
+        Cursor result = db.rawQuery("SELECT * FROM " + Constants.TABLE_NAME + ";", null);
         while (result.moveToNext()) {
             MovieObject movieObject = new MovieObject();
-            movieObject.setId(result.getInt(result.getColumnIndex("movie_ID")));
-            movieObject.setTitle(result.getString(result.getColumnIndex("title")));
-            movieObject.setRelease_date(result.getString(result.getColumnIndex("release_date")));
-            movieObject.setPoster_path(result.getString(result.getColumnIndex("poster_path")));
-            movieObject.setVote_average(result.getFloat(result.getColumnIndex("vote_average")));
-            movieObject.setOverview(result.getString(result.getColumnIndex("overview")));
+            movieObject.setId(result.getInt(result.getColumnIndex(Constants.COLUMN_HEADER_MOVIE_ID)));
+            movieObject.setTitle(result.getString(result.getColumnIndex(Constants.COLUMN_HEADER_TITLE)));
+            movieObject.setRelease_date(result.getString(result.getColumnIndex(Constants.COLUMN_HEADER_RELEASE_DATE)));
+            movieObject.setPoster_path(result.getString(result.getColumnIndex(Constants.COLUMN_HEADER_POSTER_PATH)));
+            movieObject.setVote_average(result.getFloat(result.getColumnIndex(Constants.COLUMN_HEADER_POSTER_PATH)));
+            movieObject.setOverview(result.getString(result.getColumnIndex(Constants.COLUMN_HEADER_OVERVIEW)));
             list.add(movieObject);
         }
         return list;
     }
 
     public boolean isFavoriteMovie(long id){
-        Cursor result = db.rawQuery("SELECT * FROM Movie WHERE movie_id = " + id + ";", null);
+        Cursor result = db.rawQuery("SELECT * FROM " + Constants.TABLE_NAME + " WHERE " + Constants.COLUMN_HEADER_MOVIE_ID + " = " + id + ";", null);
         int count = 0;
         while (result.moveToNext()){
             return true;
@@ -68,7 +76,7 @@ public class DBAdapter {
     }
 
     public boolean deleteMovie(long id){
-        return db.delete("Movie","movie_id= " + id,null)>0;
+        return db.delete("Movie", Constants.COLUMN_HEADER_MOVIE_ID + "= " + id,null)>0;
     }
 
 }

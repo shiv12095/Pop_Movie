@@ -6,7 +6,9 @@ package com.example.shiv.movie.commons;
  *
  * Common strings used across the app
  */
-public class Constants {
+public final class Constants {
+
+    private Constants() {}
 
     public static final String DATE_FORMAT = "YYYY-mm-dd";
 
@@ -61,4 +63,18 @@ public class Constants {
     public static final String APP_DB_NAME = "movieDB";
 
     public static final int MY_PERMISSIONS_REQUEST_STORAGE = 1;
+
+    public static final String TABLE_NAME = "Movie";
+
+    public static final String COLUMN_HEADER_MOVIE_ID =  "movie_ID";
+
+    public static final String COLUMN_HEADER_TITLE =  "title";
+
+    public static final String COLUMN_HEADER_RELEASE_DATE =  "release_date";
+
+    public static final String COLUMN_HEADER_POSTER_PATH =  "poster_path";
+
+    public static final String COLUMN_HEADER_VOTE_AVERAGE =  "vote_average";
+
+    public static final String COLUMN_HEADER_OVERVIEW =  "overview";
 }
