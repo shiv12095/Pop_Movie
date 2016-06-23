@@ -22,8 +22,6 @@ public final class Constants {
 
     public static final String INTENT_EXTRA_STRING = "string";
 
-    public static final String API_KEY = "83e9520daa55fefb8e45f28bc68eaffc";
-
     public static final String HTTP_GET = "GET";
 
     public static final String HTTP = "http";
@@ -41,8 +39,6 @@ public final class Constants {
     public static final String MOVIEDB_API_KEY_PARAMETER = "api_key";
 
     public static final String MOVIEDB_DISCOVER = "discover";
-
-    public static final String MOVIEDB_FIND = "find";
 
     public static final String MOVIEDB_IMAGE_SIZE = "w342";
 

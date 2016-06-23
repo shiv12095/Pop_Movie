@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             mTwoPane = false;
             editor.putBoolean(Constants.IS_TWO_PANE, false);
         }
-        editor.commit();
+        editor.apply();
         if (savedInstanceState != null) {
             Log.d(getClass().toString(), "Main activity has saved instance");
             return;

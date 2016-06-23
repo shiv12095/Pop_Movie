@@ -17,7 +17,7 @@ public class MovieDBApiClient {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(BASE_URL)
-//                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
         movieDBApi = restAdapter.create(MovieDBApi.class);

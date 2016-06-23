@@ -2,6 +2,8 @@ package com.example.shiv.movie.fragments;
 
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -41,6 +43,7 @@ import retrofit.client.Response;
 public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences otherSharedPreferences;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArrayList<MovieObject> movieObjectArrayList;
     private MovieDBApiClient movieDBApiClient;
@@ -56,6 +59,14 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
 
     private String MOVIE_LIST = "movie_list";
     private static boolean recreateView = true;
+
+    private Context context;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +86,7 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         }
         movieDBApiClient = new MovieDBApiClient();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        otherSharedPreferences = getActivity().getSharedPreferences(Constants.SHARED_PREF, Activity.MODE_PRIVATE);
         checkPermissionsGranted();
         if (writePermission) {
             dbAdapter = new DBAdapter();
@@ -88,11 +100,13 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
     public void onStart() {
         super.onStart();
         Log.d(getClass().toString(), "On start called");
-        Log.d(getClass().toString(), "Recreate view is : " + recreateView);
-        if (!recreateView) {
+        Log.d(getClass().toString(), "Recreate view is : " + recreateView + " and movieObjectList size is : " + Integer.toString(movieObjectArrayList.size()));
+        if (!recreateView && !movieObjectArrayList.isEmpty()) {
             gridAdapter.clear();
             gridAdapter.addAll(movieObjectArrayList);
+            populateMovieDetailFragment();
         } else {
+            Log.d(getClass().toString(), "Called here");
             swipeRefreshLayout.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -175,7 +189,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         movieDBApiClient.getService().getPopularMovies(parameters, new Callback<MovieObjectResponse>() {
             @Override
             public void success(MovieObjectResponse movieObjectResponse, Response response) {
-                Log.d(getClass().toString(), "Success");
                 if (movieObjectResponse.getResults().isEmpty()) {
                     Toast.makeText(getActivity(),
                             getActivity().getResources().getString(R.string.no_movie_data_found),
@@ -194,15 +207,14 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
                     if (!allowNSFW) {
                         if (!movieObject.isAdult()) {
                             movieObjectArrayList.add(movieObject);
-                            Log.d(getClass().toString(), Long.toString(movieObject.getId()));
                         }
                     } else {
                         movieObjectArrayList.add(movieObject);
-                        Log.d(getClass().toString(), Long.toString(movieObject.getId()));
                     }
                 }
                 gridAdapter.clear();
                 gridAdapter.addAll(movieObjectArrayList);
+                populateMovieDetailFragment();
             }
 
             @Override
@@ -219,7 +231,6 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         movieDBApiClient.getService().getTopRatedMovies(parameters, new Callback<MovieObjectResponse>() {
             @Override
             public void success(MovieObjectResponse movieObjectResponse, Response response) {
-                Log.d(getClass().toString(), "Success");
                 if (movieObjectResponse.getResults().isEmpty()) {
                     Toast.makeText(getActivity(),
                             getActivity().getResources().getString(R.string.no_movie_data_found),
@@ -238,15 +249,14 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
                     if (!allowNSFW) {
                         if (!movieObject.isAdult()) {
                             movieObjectArrayList.add(movieObject);
-                            Log.d(getClass().toString(), Long.toString(movieObject.getId()));
                         }
                     } else {
                         movieObjectArrayList.add(movieObject);
-                        Log.d(getClass().toString(), Long.toString(movieObject.getId()));
                     }
                 }
                 gridAdapter.clear();
                 gridAdapter.addAll(movieObjectArrayList);
+                populateMovieDetailFragment();
             }
 
             @Override
@@ -303,7 +313,7 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
         super.onSaveInstanceState(outState);
         Log.d(getClass().toString(), "Trying to save stuff");
         outState.putString(MOVIE_LIST, gson.toJson(gridAdapter.getMovieObjectArrayList()));
-        Log.d(getClass().toString(), outState.getString(MOVIE_LIST));
+        Log.d(getClass().toString(), "Saved stuff "  + outState.getString(MOVIE_LIST));
     }
 
     public static boolean isRecreateView() {
@@ -333,6 +343,20 @@ public class MovieGridFragment extends Fragment implements SwipeRefreshLayout.On
             swipeRefreshLayout.setRefreshing(false);
             gridAdapter.clear();
             gridAdapter.addAll(list);
+            populateMovieDetailFragment();
+        }
+    }
+
+    private void populateMovieDetailFragment(){
+        if(otherSharedPreferences.getBoolean(Constants.IS_TWO_PANE, false)){
+            Bundle args = new Bundle();
+            MovieObject movieObject = movieObjectArrayList.get(0);
+            args.putString(Constants.INTENT_EXTRA_STRING, gson.toJson(movieObject));
+            MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
+            movieDetailFragment.setArguments(args);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.activity_main_movie_detail_container, movieDetailFragment)
+                    .commit();
         }
     }
 }
